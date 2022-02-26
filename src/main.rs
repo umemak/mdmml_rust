@@ -1,24 +1,20 @@
+extern crate mdmml_rust;
+
 use std::env;
-use std::fs::File;
-use std::io::prelude::*;
+use std::process;
+
+use mdmml_rust::Config;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    let config = parse_config(&args);
-    let mut f = File::open(config.filename).expect("file not found");
-    let mut contents = String::new();
-    f.read_to_string(&mut contents)
-        .expect("something went wrong reading the file");
+    let config = Config::new(&args).unwrap_or_else(|err| {
+        println!("Problem parsing arguments: {}", err);
+        process::exit(1);
+    });
 
-    println!("{}", contents);
-}
+    if let Err(e) = mdmml_rust::run(config) {
+        println!("Application error: {}", e);
 
-struct Config {
-    filename: String,
-}
-
-fn parse_config(args: &[String]) -> Config{
-    let filename = args[1].clone();
-
-    Config { filename }
+        process::exit(1);
+    }
 }
