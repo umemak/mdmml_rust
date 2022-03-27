@@ -19,9 +19,25 @@ impl Config {
 
 pub fn run(config: Config)-> Result<(), Box<dyn Error>> {
     let mut f = File::open(config.filename)?;
-    let mut contents = String::new();
-    f.read_to_string(&mut contents)?;
+    let mut src = String::new();
+    f.read_to_string(&mut src)?;
+    let mml = md_to_mml(src);
+    println!("{}", mml.mml);
+    let smf = mml_to_smf(mml);
 
-    println!("{}", contents);
+    println!("{}", smf);
     Ok(())
+}
+
+struct MDMML {
+    mml: String,
+}
+
+fn md_to_mml(src: String)->MDMML {
+    let mml= MDMML{mml:src};
+    mml
+}
+
+fn mml_to_smf(mml: MDMML)->u8{
+    0
 }
