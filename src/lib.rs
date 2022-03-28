@@ -25,7 +25,7 @@ pub fn run(config: Config)-> Result<(), Box<dyn Error>> {
     println!("{}", mml.mml);
     let smf = mml_to_smf(mml);
 
-    println!("{}", smf);
+    println!("{:?}", smf);
     Ok(())
 }
 
@@ -34,10 +34,13 @@ struct MDMML {
 }
 
 fn md_to_mml(src: String)->MDMML {
-    let mml= MDMML{mml:src};
+    let mut mml= MDMML{mml:src};
     mml
 }
 
-fn mml_to_smf(mml: MDMML)->u8{
-    0
+fn mml_to_smf(mml: MDMML)->Vec<u8>{
+    let mut smf = Vec::new();
+    smf.push(0x00);
+
+    smf
 }
